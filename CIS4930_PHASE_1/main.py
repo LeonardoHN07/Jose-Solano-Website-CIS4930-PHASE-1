@@ -2,13 +2,6 @@ import spacy
 from spacy.training import Example
 import streamlit as st
 from trainingModel import TRAINING_DATA
-from spacy.cli import download
-
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
 
 MODEL_PATH = "custom_trained_model"
 
