@@ -1,7 +1,7 @@
 import spacy
 from spacy.training import Example
 import streamlit as st
-#rom trainingModel import TRAINING_DATA
+#from trainingModel import TRAINING_DATA
 import os
 
 TRAINING_DATA = \
