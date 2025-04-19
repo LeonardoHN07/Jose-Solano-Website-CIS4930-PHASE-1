@@ -82,13 +82,15 @@ class NERModel:
         if not hasattr(self, 'custom_nlp') or self.custom_nlp is None:
             self.custom_nlp = spacy.blank("en")
             if "ner" not in self.custom_nlp.pipe_names:
-                self.custom_nlp.add_pipe("ner")
+                ner = self.custom_nlp.add_pipe("ner")
 
-        ner = self.custom_nlp.get_pipe("ner")
-
-        for text, annotations in TRAINING_DATA:
-            for start, end, label in annotations["entities"]:
-                ner.add_label(label)
+                # Add all labels from TRAINING_DATA
+                labels = set()
+                for _, annotations in TRAINING_DATA:
+                    for _, _, label in annotations["entities"]:
+                        labels.add(label)
+                for label in labels:
+                    ner.add_label(label)
 
         examples = [
             Example.from_dict(self.custom_nlp.make_doc(text), annotations)
