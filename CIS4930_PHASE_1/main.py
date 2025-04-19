@@ -35,7 +35,12 @@ class NERModel:
     def __init__(self, model_path=MODEL_PATH):
         self.model_path = model_path
         self.custom_nlp = self.load_model()
-        self.default_nlp = spacy.load("en_core_web_sm")
+        try:
+            self.default_nlp = spacy.load("en_core_web_sm")
+        except OSError:
+            from spacy.cli import download
+            download("en_core_web_sm")
+            self.default_nlp = spacy.load("en_core_web_sm")
 
     def load_model(self):
         try:
