@@ -3,6 +3,7 @@ from spacy.training import Example
 import streamlit as st
 #from trainingModel import TRAINING_DATA
 import os
+import random
 
 TRAINING_DATA = \
 [
@@ -79,34 +80,49 @@ class NERModel:
             return nlp
 
     def train_model(self):
+        # Create a blank English model if it doesn't exist
         if not hasattr(self, 'custom_nlp') or self.custom_nlp is None:
             self.custom_nlp = spacy.blank("en")
-            if "ner" not in self.custom_nlp.pipe_names:
-                ner = self.custom_nlp.add_pipe("ner")
 
-                # Add all labels from TRAINING_DATA
-                labels = set()
-                for _, annotations in TRAINING_DATA:
-                    for _, _, label in annotations["entities"]:
-                        labels.add(label)
-                for label in labels:
-                    ner.add_label(label)
+        # Add NER pipe if it doesn't exist
+        if "ner" not in self.custom_nlp.pipe_names:
+            ner = self.custom_nlp.add_pipe("ner")
+        else:
+            ner = self.custom_nlp.get_pipe("ner")
 
-        examples = [
-            Example.from_dict(self.custom_nlp.make_doc(text), annotations)
-            for text, annotations in TRAINING_DATA
-        ]
+        # Add all labels from the training data
+        labels = set()
+        for _, annotations in TRAINING_DATA:
+            for _, _, label in annotations["entities"]:
+                labels.add(label)
+        for label in labels:
+            ner.add_label(label)
 
-        unaffected_pipes = [pipe for pipe in self.custom_nlp.pipe_names if pipe != "ner"]
-        with self.custom_nlp.disable_pipes(*unaffected_pipes):
-            optimizer = self.custom_nlp.resume_training()
-            for epoch in range(10):
-                for example in examples:
-                    self.custom_nlp.update([example], drop=0.5, sgd=optimizer)
+        # Disable other pipes during training
+        other_pipes = [pipe for pipe in self.custom_nlp.pipe_names if pipe != "ner"]
+        with self.custom_nlp.disable_pipes(*other_pipes):
+            # Initialize the model with random weights
+            optimizer = self.custom_nlp.initialize()
 
+            # Convert training data to spaCy's Example format
+            examples = []
+            for text, annotations in TRAINING_DATA:
+                doc = self.custom_nlp.make_doc(text)
+                example = Example.from_dict(doc, annotations)
+                examples.append(example)
+
+            # Train for 30 iterations
+            for itn in range(30):
+                random.shuffle(examples)
+                losses = {}
+                for batch in spacy.util.minibatch(examples, size=8):
+                    self.custom_nlp.update(batch, drop=0.5, losses=losses, sgd=optimizer)
+                print(f"Iteration {itn}, Losses: {losses}")  # For debugging
+
+        # Save the model
         os.makedirs(self.model_path, exist_ok=True)
         self.custom_nlp.to_disk(self.model_path)
-        self.custom_nlp = self.load_model()
+        self.custom_nlp = spacy.load(self.model_path)
 
     def highlight_entities_html(self, text, entity_vars):
         doc_custom = self.custom_nlp(text)
