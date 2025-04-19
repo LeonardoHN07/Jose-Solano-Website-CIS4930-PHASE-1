@@ -27,6 +27,8 @@ TRAINING_DATA = \
    ("A Skyscanner survey also reported a strong demand for premium cabins, particularly in markets with higher GDP per capita. ", {"entities": [(54,68,"PRODUCT")]}), # Premium cabins
    ("According to ForwardKeys data, passengers in premium flight cabins were around 60% below 2019 levels in the first quarter of 2022. ", {"entities": [(31,41,"PERSON")]}), # Passengers
    ("International travel is the more popular choice for luxury travellers who book premium flight cabins, as nearly 82% of business and first-class flight bookings on Trip.com in 2022 were for international routes. ", {"entities": [(87,93,"PRODUCT")]}), #flight
+("The craft beer selection includes IPA, lager and stout varieties", {"entities": [(16, 21, "PRODUCT")]}),
+("We recommend trying the local wine and cheese", {"entities": [(25, 29, "PRODUCT"), (34, 40, "PRODUCT")]}),
 
 ]
 
