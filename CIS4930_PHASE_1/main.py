@@ -27,7 +27,7 @@ TRAINING_DATA = \
    ("A Skyscanner survey also reported a strong demand for premium cabins, particularly in markets with higher GDP per capita. ", {"entities": [(54,68,"PRODUCT")]}), # Premium cabins
    ("According to ForwardKeys data, passengers in premium flight cabins were around 60% below 2019 levels in the first quarter of 2022. ", {"entities": [(31,41,"PERSON")]}), # Passengers
    ("International travel is the more popular choice for luxury travellers who book premium flight cabins, as nearly 82% of business and first-class flight bookings on Trip.com in 2022 were for international routes. ", {"entities": [(87,93,"PRODUCT")]}), #flight
-("Whether youre storing up to 77 beer cans or freshly caught fish, the Tundra 65 is more than capable of keeping its cargo safe and cold.", {"entities": [(31,35, "PRODUCT")]}),
+#("Whether youre storing up to 77 beer cans or freshly caught fish, the Tundra 65 is more than capable of keeping its cargo safe and cold.", {"entities": [(31,35, "PRODUCT")]}),
 ]
 
 MODEL_PATH = "custom_trained_model"
