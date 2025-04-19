@@ -18,7 +18,7 @@ TRAINING_DATA = \
    ("in which includes travel spending by Mexican visitors to the U.S, education-related expenses by Mexicans in the U.S.", {"entities": [(37,44,"PERSON")]} ),
    ("The Los Glaciares National Park is an area of exceptional natural beauty, with rugged, towering mountains and numerous glacial lakes, including Lake Argentino, which is 160 km long.", {"entities": [(144,158, "LOCATION")]}),
    ("This study aims to investigate the potential tourism value of Debre Aron Monastery, which is one of the most overlooked religious sites in northern Ethiopia.", {"entities": [(120,135, "LOCATION")]}),
-   ("Whether youre storing up to 77 beer cans or freshly caught fish, the Tundra 65 is more than capable of keeping its cargo safe and cold.", {"entities": [(31,35, "PRODUCT")]}),
+
    ("This seven-piece set includes one large, three medium, and two small packing cubes, plus a shoe bag that’ll help you organize your items and maximize the space in your luggage.", {"entities": [(168,176,"PRODUCT")]}),
    ("plus a shoe bag that’ll help you organize your items and maximize the space in your luggage.", {"entities": [(7,15,"PRODUCT")]}),
    ("This Cabeau Evolution S2 Travel Pillow will help keep you comfy with its plush, dual-density memory foam material.",{"entities": [(32,38, "PRODUCT")]} ),
@@ -27,9 +27,7 @@ TRAINING_DATA = \
    ("A Skyscanner survey also reported a strong demand for premium cabins, particularly in markets with higher GDP per capita. ", {"entities": [(54,68,"PRODUCT")]}), # Premium cabins
    ("According to ForwardKeys data, passengers in premium flight cabins were around 60% below 2019 levels in the first quarter of 2022. ", {"entities": [(31,41,"PERSON")]}), # Passengers
    ("International travel is the more popular choice for luxury travellers who book premium flight cabins, as nearly 82% of business and first-class flight bookings on Trip.com in 2022 were for international routes. ", {"entities": [(87,93,"PRODUCT")]}), #flight
-("The craft beer selection includes IPA, lager and stout varieties", {"entities": [(16, 21, "PRODUCT")]}),
-("We recommend trying the local wine and cheese", {"entities": [(25, 29, "PRODUCT"), (34, 40, "PRODUCT")]}),
-
+("Whether youre storing up to 77 beer cans or freshly caught fish, the Tundra 65 is more than capable of keeping its cargo safe and cold.", {"entities": [(31,35, "PRODUCT")]}),
 ]
 
 MODEL_PATH = "custom_trained_model"
