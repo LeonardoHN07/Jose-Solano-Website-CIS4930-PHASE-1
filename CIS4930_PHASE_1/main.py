@@ -45,8 +45,13 @@ class NERModel:
     def load_model(self):
         try:
             return spacy.load(self.model_path)
-        except:
-            return spacy.load("en_core_web_sm")
+        except OSError:
+            try:
+                return spacy.load("en_core_web_sm")
+            except OSError:
+                from spacy.cli import download
+                download("en_core_web_sm")
+                return spacy.load("en_core_web_sm")
 
     def train_model(self):
         if "ner" not in self.custom_nlp.pipe_names:
