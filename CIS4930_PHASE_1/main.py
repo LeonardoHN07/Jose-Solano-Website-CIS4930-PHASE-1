@@ -35,31 +35,30 @@ class NERModel:
     def __init__(self, model_path=MODEL_PATH):
         self.model_path = model_path
         self.custom_nlp = self.load_model()
+        self.default_nlp = self.load_default_model()
+
+    def load_default_model(self):
         try:
-            self.default_nlp = spacy.load("en_core_web_sm")
+            return spacy.load("en_core_web_sm")
         except OSError:
             from spacy.cli import download
             download("en_core_web_sm")
-            self.default_nlp = spacy.load("en_core_web_sm")
+            return spacy.load("en_core_web_sm")
 
     def load_model(self):
         try:
             return spacy.load(self.model_path)
         except OSError:
-            try:
-                return spacy.load("en_core_web_sm")
-            except OSError:
-                from spacy.cli import download
-                download("en_core_web_sm")
-                return spacy.load("en_core_web_sm")
+            return self.load_default_model()
 
     def train_model(self):
         if "ner" not in self.custom_nlp.pipe_names:
-            ner = self.custom_nlp.add_pipe("ner")
+            ner = self.custom_nlp.add_pipe("ner", last=True)
         else:
             ner = self.custom_nlp.get_pipe("ner")
 
-        for text, annotations in TRAINING_DATA:
+        # Add labels to the NER pipeline
+        for _, annotations in TRAINING_DATA:
             for start, end, label in annotations["entities"]:
                 ner.add_label(label)
 
@@ -68,6 +67,7 @@ class NERModel:
             for text, annotations in TRAINING_DATA
         ]
 
+        # Disable other pipes during training to focus on NER
         unaffected_pipes = [pipe for pipe in self.custom_nlp.pipe_names if pipe != "ner"]
         with self.custom_nlp.disable_pipes(*unaffected_pipes):
             optimizer = self.custom_nlp.resume_training()
@@ -75,6 +75,7 @@ class NERModel:
                 for example in examples:
                     self.custom_nlp.update([example], drop=0.5, sgd=optimizer)
 
+        # Save the trained model
         self.custom_nlp.to_disk(self.model_path)
         self.custom_nlp = self.load_model()
 
@@ -120,4 +121,5 @@ if st.button("Train & Highlight Entities"):
     html_output = model.highlight_entities_html(text_input, selected_labels)
     st.subheader("Highlighted Output:")
     st.markdown(f"<div style='font-family:Arial; font-size:16px'>{html_output}</div>", unsafe_allow_html=True)
+
 
